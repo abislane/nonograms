@@ -7,6 +7,7 @@ class Line
 {
 public:
   Line(int size);
+  ~Line();
   void put(int index, int type);
   void clear();
   std::vector<int> getData();
@@ -15,7 +16,7 @@ public:
 private:
   std::vector<int> getBlocksUpto(int upto);
   int size;
-  std::vector<int> filled
+  int *filled;
 }
 
 #endif
