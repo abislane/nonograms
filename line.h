@@ -6,17 +6,17 @@
 class Line
 {
 public:
-  Line(int size);
+  Line(int s);
   ~Line();
   void put(int index, int type);
   void clear();
-  std::vector<int> getData();
-  int size();
-  bool isValid(std::vector<int> clues, int upto);
+  int *get_data();
+  int get_size();
+  bool is_valid(std::vector<int> clues, int upto);
 private:
-  std::vector<int> getBlocksUpto(int upto);
+  std::vector<int> get_blocks_upto(int upto);
   int size;
   int *filled;
-}
+};
 
 #endif
