@@ -1,11 +1,11 @@
 #include "line.h"
 #include <stdexcept>
-#include <cstring>
 
 Line::Line(int s)
 {
   size = s;
   filled = new int[s];
+  clear();
 }
 
 Line::~Line()
@@ -24,7 +24,11 @@ void Line::put(int index, int type)
 
 void Line::clear()
 {
-  std::memset(filled, 0, size);
+  int i;
+  for(i = 0; i < size; i++)
+  {
+    filled[i] = 0;
+  }
 }
 
 int *Line::get_data()
@@ -54,12 +58,17 @@ std::vector<int> Line::get_blocks_upto(int upto)
       current_block_size = 0;
     }
   }
+  if(current_block_size != 0)
+  {
+    result.push_back(current_block_size);
+  }
   return result;
 }
 
 bool Line::is_valid(std::vector<int> clues, int upto)
 {
   std::vector<int> current_blocks = get_blocks_upto(upto);
+
   // check if we know the last block is done being filled
   // this is marked by a 0 at the end, or if we check the entire row
   bool last_block_done = (upto == size || filled[upto - 1] == 0);
