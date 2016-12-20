@@ -22,5 +22,6 @@ private:
 
 int num_slots(std::vector<int> clues, int size);
 std::vector<int> combo_str_to_vector(std::string bitmask);
+Line fill_line(int size, std::vector<int> clues, std::vector<int> perm);
 
 #endif

@@ -10,15 +10,15 @@ int main()
   clues.push_back(2);
   cout << num_slots(clues, 5) << endl;
 
-  std::vector<int> clues2;
-  clues2.push_back(15);
-  cout << num_slots(clues2, 15) << endl;
+  std::vector<int> perm;
+  perm.push_back(1);
+  perm.push_back(2);
 
-  cout << "--------------------------" << endl;
+  Line test = fill_line(5, clues, perm);
+  int* data = test.get_data();
 
-  vector<int> perm = combo_str_to_vector("10011");
-  for(unsigned int i = 0; i < perm.size(); i++){
-    cout << perm[i] << " ";
+  for(int i = 0; i < 5; i++){
+    cout << data[i] << " ";
   }
   cout << endl;
   return 0;
