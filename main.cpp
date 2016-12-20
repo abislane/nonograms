@@ -16,11 +16,10 @@ int main()
 
   cout << "--------------------------" << endl;
 
-  unsigned int perm[5];
-  int size = combo_str_to_arr(perm, "10011");
-  for(int i = 0; i < size; i++){
-    std::cout << perm[i] << " ";
+  vector<int> perm = combo_str_to_vector("10011");
+  for(unsigned int i = 0; i < perm.size(); i++){
+    cout << perm[i] << " ";
   }
-  std::cout << std::endl;
+  cout << endl;
   return 0;
 }

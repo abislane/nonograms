@@ -117,21 +117,20 @@ int num_slots(std::vector<int> clues, int size)
 }
 
 /*
- * Given a bitmask representing a permutation, construct an array of the indecies where we have a 1
+ * Given a bitmask representing a permutation, construct a vector of the indecies where we have a 1
  */
-int combo_str_to_arr(unsigned int* arr, std::string bitmask)
+std::vector<int> combo_str_to_vector(std::string bitmask)
 {
-  int i = 0;
+  std::vector<int> result;
   unsigned int j;
   for(j = 0; j < bitmask.length(); j++)
   {
     if(bitmask[j] == '1')
     {
-      arr[i] = j;
-      i++;
+      result.push_back(j);
     }
   }
 
   // return the amount of arr used by the permutation
-  return i;
+  return result;
 }

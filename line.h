@@ -21,6 +21,6 @@ private:
 };
 
 int num_slots(std::vector<int> clues, int size);
-int combo_str_to_arr(unsigned int* arr, std::string bitmask);
+std::vector<int> combo_str_to_vector(std::string bitmask);
 
 #endif
