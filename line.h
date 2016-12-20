@@ -19,4 +19,7 @@ private:
   int *filled;
 };
 
+int num_slots(std::vector<int> clues, int size);
+int get_combination(int *arr, int num, int n, int k);
+
 #endif

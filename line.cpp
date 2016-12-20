@@ -1,5 +1,6 @@
 #include "line.h"
 #include <stdexcept>
+#include <numeric>
 
 Line::Line(int s)
 {
@@ -107,3 +108,7 @@ bool Line::is_valid(std::vector<int> clues, int upto)
   }
 }
 
+int num_slots(std::vector<int> clues, int size)
+{
+  return size - std::accumulate(clues.begin(), clues.end(), 0) + 1;
+}

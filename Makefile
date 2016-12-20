@@ -1,8 +1,8 @@
 OBJS = line.o main.o
 CC = g++
 DEBUG = -g
-CFLAGS = -Wall -c $(DEBUG)
-LFLAGS = -Wall $(DEBUG)
+CFLAGS = -Wall -std=c++11 -c $(DEBUG)
+LFLAGS = -Wall -std=c++11 $(DEBUG)
 
 solver: $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o solver
