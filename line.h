@@ -2,6 +2,7 @@
 #define LINE_H
 
 #include <vector>
+#include <string>
 
 class Line
 {
@@ -20,6 +21,6 @@ private:
 };
 
 int num_slots(std::vector<int> clues, int size);
-int get_combination(int *arr, int num, int n, int k);
+int combo_str_to_arr(unsigned int* arr, std::string bitmask);
 
 #endif

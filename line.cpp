@@ -108,7 +108,30 @@ bool Line::is_valid(std::vector<int> clues, int upto)
   }
 }
 
+/*
+ * given clues and the size of a line, find how many "spaces" there are for collections of blocks
+ */
 int num_slots(std::vector<int> clues, int size)
 {
   return size - std::accumulate(clues.begin(), clues.end(), 0) + 1;
+}
+
+/*
+ * Given a bitmask representing a permutation, construct an array of the indecies where we have a 1
+ */
+int combo_str_to_arr(unsigned int* arr, std::string bitmask)
+{
+  int i = 0;
+  unsigned int j;
+  for(j = 0; j < bitmask.length(); j++)
+  {
+    if(bitmask[j] == '1')
+    {
+      arr[i] = j;
+      i++;
+    }
+  }
+
+  // return the amount of arr used by the permutation
+  return i;
 }
