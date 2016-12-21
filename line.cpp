@@ -113,6 +113,10 @@ bool Line::is_valid(std::vector<int> clues, int upto)
  */
 int num_slots(std::vector<int> clues, int size)
 {
+  if(clues.size() == 0)
+  {
+    return size;
+  }
   return size - std::accumulate(clues.begin(), clues.end(), 0) + 1;
 }
 
