@@ -14,6 +14,13 @@ Line::~Line()
   delete[] filled;
 }
 
+Line & Line::operator=(const Line & other)
+{
+  size = other.size;
+  filled = other.filled;
+  return *this;
+}
+
 void Line::put(int index, int type)
 {
   if(index < 0 || index >= size)

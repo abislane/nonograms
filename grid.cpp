@@ -95,3 +95,34 @@ bool Grid::solve_row(int r)
   lines[r].clear();
   return false;
 }
+
+bool Grid::verify_columns(int upto)
+{
+  int i;
+  Line column(rows);
+
+  for(i = 0; i < cols; i++)
+  {
+    column = create_column(i);
+    if(!column.is_valid(col_clues[i], upto))
+    {
+      return false;
+    }
+  }
+  return false;
+}
+
+Line Grid::create_column(int col)
+{
+  Line result(rows);
+  int i;
+  for(i = 0; i < rows; i++)
+  {
+    if(lines[col].get_data())
+    {
+      result.put(i, 1);
+    }
+  }
+
+  return result;
+}

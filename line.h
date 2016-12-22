@@ -9,6 +9,7 @@ class Line
 public:
   Line(int s);
   ~Line();
+  Line & operator=(const Line & other); 
   void put(int index, int type);
   void clear();
   int *get_data();
