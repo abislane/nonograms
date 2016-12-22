@@ -77,10 +77,8 @@ std::vector<int> Line::get_blocks_upto(int upto)
 bool Line::is_valid(std::vector<int> clues, int upto)
 {
   std::vector<int> current_blocks = get_blocks_upto(upto);
-  std::cout << "(num blocks = " << current_blocks.size() << ") ";
   if(current_blocks.size() == 0 && upto != size)
   {
-    std::cout << 'a' << std::endl;
     return true;
   }
 
@@ -92,7 +90,6 @@ bool Line::is_valid(std::vector<int> clues, int upto)
   // if we have more blocks than clues, then something is wrong
   if(current_blocks.size() > clues.size())
   {
-    std::cout << 'b' << std::endl;
     return false;
   }
 
@@ -101,7 +98,6 @@ bool Line::is_valid(std::vector<int> clues, int upto)
     // verify that the completed blocks are the right size
     if (current_blocks[i] != clues[i])
     {
-      std::cout << "c(" << i << ')' << std::endl;
       return false;
     }
   }
@@ -112,17 +108,14 @@ bool Line::is_valid(std::vector<int> clues, int upto)
     // make sure that we cover all clues if we are checking the whole row
     if(upto == size && current_blocks.size() < clues.size())
     {
-      std::cout << 'd' << std::endl;
       return false;
     }
     // the last block is done, so we check the whole thing
-    std::cout << 'e' << std::endl;
     return current_blocks[current_blocks.size() - 1] == clues[current_blocks.size() - 1];
   }
   else
   {
     //the last block is not done, so verify that it isn't larger than it should be
-    std::cout << 'f' << std::endl;
     return current_blocks[current_blocks.size() - 1] <= clues[current_blocks.size() - 1];
   }
 }

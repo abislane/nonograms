@@ -82,12 +82,9 @@ bool Grid::solve_row(int r)
 
     if(!verify_columns(r+1))
     {
-      print_grid();
       continue;
     }
 
-    std::cout << "OK on row " << r << std::endl;
-    print_grid();
     valid = solve_row(r+1);
     if(valid)
     {
@@ -101,20 +98,14 @@ bool Grid::solve_row(int r)
 
 bool Grid::verify_columns(int upto)
 {
-  int i, j;
+  int i;
   Line column(rows);
 
   for(i = 0; i < cols; i++)
   {
-    std::cout << "column " << i << ": ";
     column = create_column(i);
-    for(j = 0; j < rows; j++)
-    {
-      std::cout << column.get_data()[j];
-    }
     if(!column.is_valid(col_clues[i], upto))
     {
-      std::cout << "BAD on column " << i << std::endl;
       return false;
     }
   }
