@@ -10,7 +10,7 @@ public:
   void add_row_clues(int row, std::vector<int> clues);
   void add_col_clues(int col, std::vector<int> clues);
   bool solve();
-  bool print_grid();
+  void print_grid();
 private:
   int rows;
   int cols;

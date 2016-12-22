@@ -1,4 +1,4 @@
-OBJS = line.o main.o
+OBJS = line.o grid.o main.o
 CC = g++
 DEBUG = -g
 CFLAGS = -Wall -std=c++11 -c $(DEBUG)
@@ -12,6 +12,9 @@ line.o: line.h line.cpp
 
 main.o: main.cpp line.h
 	$(CC) $(CFLAGS) main.cpp
+
+grid.o: grid.h grid.cpp line.h
+	$(CC) $(CFLAGS) grid.cpp
 
 clean:
 	\rm *.o *~ solver
