@@ -72,8 +72,8 @@ bool Grid::solve_row(int r)
   int k = row_clues[r].size();
   int n = num_slots(row_clues[r], cols);
   
-  std::string bitmask(k, 1);
-  bitmask.resize(n, 0);
+  std::string bitmask(k, '1');
+  bitmask.resize(n, '0');
 
   do
   {
@@ -82,9 +82,12 @@ bool Grid::solve_row(int r)
 
     if(!verify_columns(r+1))
     {
+      print_grid();
       continue;
     }
 
+    std::cout << "OK on row " << r << std::endl;
+    print_grid();
     valid = solve_row(r+1);
     if(valid)
     {
@@ -98,18 +101,24 @@ bool Grid::solve_row(int r)
 
 bool Grid::verify_columns(int upto)
 {
-  int i;
+  int i, j;
   Line column(rows);
 
   for(i = 0; i < cols; i++)
   {
+    std::cout << "column " << i << ": ";
     column = create_column(i);
+    for(j = 0; j < rows; j++)
+    {
+      std::cout << column.get_data()[j];
+    }
     if(!column.is_valid(col_clues[i], upto))
     {
+      std::cout << "BAD on column " << i << std::endl;
       return false;
     }
   }
-  return false;
+  return true;
 }
 
 Line Grid::create_column(int col)
@@ -118,10 +127,7 @@ Line Grid::create_column(int col)
   int i;
   for(i = 0; i < rows; i++)
   {
-    if(lines[col].get_data())
-    {
-      result.put(i, 1);
-    }
+    result.put(i, lines[i].get_data()[col]);
   }
 
   return result;
