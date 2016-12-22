@@ -139,14 +139,13 @@ std::vector<int> combo_str_to_vector(std::string bitmask)
   return result;
 }
 
-Line fill_line(int size, std::vector<int> clues, std::vector<int> perm)
+void Line::fill_line(std::vector<int> clues, std::vector<int> perm)
 {
   if(clues.size() != perm.size())
   {
     throw new std::domain_error("clues and permuation are of different sizes");
   }
 
-  Line result(size);
   unsigned int i;
   int j, k;
   for(i = 0; i < clues.size(); i++)
@@ -162,9 +161,7 @@ Line fill_line(int size, std::vector<int> clues, std::vector<int> perm)
 
     for(k = 0; k < clues[i]; k++, j++)
     {
-      result.put(j, 1);
+      put(j, 1);
     }
   }
-
-  return result;
 }

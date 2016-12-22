@@ -20,7 +20,7 @@ private:
 
   bool verify_columns(int upto);
   Line create_column(int col);
-  int solve_row(int row);
+  bool solve_row(int row);
 };
 
 #endif

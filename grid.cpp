@@ -53,3 +53,45 @@ void Grid::print_grid()
     std:: cout << std::endl;
   }
 }
+
+bool Grid::solve()
+{
+  return solve_row(0);
+}
+
+bool Grid::solve_row(int r)
+{
+  if(r == rows)
+  {
+    return true;
+  }
+  
+  bool valid;
+  std::vector<int> combo;
+
+  int k = row_clues[r].size();
+  int n = num_slots(row_clues[r], cols);
+  
+  std::string bitmask(k, 1);
+  bitmask.resize(n, 0);
+
+  do
+  {
+    combo = combo_str_to_vector(bitmask);
+    lines[r].fill_line(row_clues[r], combo);
+
+    if(!verify_columns(r+1))
+    {
+      continue;
+    }
+
+    valid = solve_row(r+1);
+    if(valid)
+    {
+      return true;
+    }
+  } while(std::prev_permutation(bitmask.begin(), bitmask.end()));
+
+  lines[r].clear();
+  return false;
+}
