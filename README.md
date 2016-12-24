@@ -17,4 +17,4 @@ The project builds with c++11 in gcc. A Makefile is included in the repo. Downlo
 ## future features
 * Better pruning
 * multicolor nonograms
-* `smart` solver
+* "smart" solver
