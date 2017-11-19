@@ -10,6 +10,7 @@ public:
   void add_row_clues(int row, std::vector<int> clues);
   void add_col_clues(int col, std::vector<int> clues);
   bool solve();
+  bool solved();
   void print_grid();
 private:
   int rows;
@@ -20,7 +21,9 @@ private:
 
   bool verify_columns(int upto);
   Line create_column(int col);
+  void assign_column(int col, Line line);
   bool solve_row(int row);
+  bool solve_col(int col);
 };
 
 #endif
