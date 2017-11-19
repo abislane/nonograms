@@ -10,6 +10,19 @@ Line::Line(int s)
   clear();
 }
 
+Line::Line(const Line & other)
+{
+  size = other.size;
+  int* data = other.filled;
+  int i;
+  filled = new int[size];
+
+  for(i = 0; i < size; i++)
+  {
+    filled[i] = data[i];
+  }
+}
+
 Line::~Line()
 {
   //delete[] filled;
@@ -37,6 +50,14 @@ void Line::clear()
   for(i = 0; i < size; i++)
   {
     filled[i] = 0;
+  }
+}
+
+void Line::fill_x() {
+  int i;
+  for(i = 0; i < size; i++)
+  {
+    filled[i] = -1;
   }
 }
 
@@ -162,6 +183,7 @@ void Line::fill_line(std::vector<int> clues, std::vector<int> perm)
   int j, k;
 
   clear();
+  fill_x();
   for(i = 0; i < clues.size(); i++)
   {
     if(i == 0)
@@ -178,4 +200,60 @@ void Line::fill_line(std::vector<int> clues, std::vector<int> perm)
       put(j, 1);
     }
   }
+}
+
+/*
+ * returns the closest match between the two given lines. If there is
+ * a difference between the lines, a 0 for undetermined is placed. Otherwise,
+ * the same data between the lines is added
+ */
+Line Line::union_lines(Line other) 
+{
+  if(size != other.get_size()) 
+  {
+    throw new std::domain_error("Liens are different sizes");
+  }
+
+  int i;
+  int* data = other.get_data();
+  Line new_line(size);
+
+  for(i = 0; i < size; i++) 
+  {
+    if(filled[i] == data[i]) 
+    {
+      new_line.put(i, filled[i]);
+    }
+    else 
+    {
+      new_line.put(i, 0);
+    }
+  }
+
+  return new_line;
+}
+
+/*
+ * checks if this line could be a match with another line. Returns true if all
+ * non-zero elements of the other line match up with this line
+ */
+bool Line::matches(Line other) 
+{
+  if(size != other.get_size()) 
+  {
+    throw new std::domain_error("Liens are different sizes");
+  }
+
+  int i;
+  int* data = other.get_data();
+
+  for(i = 0; i < size; i++)
+  {
+    if(data[i] != 0 && data[i] != filled[i]) 
+    {
+      return false;
+    }
+  }
+
+  return true;
 }
