@@ -45,28 +45,67 @@ void Grid::print_grid()
       {
         std::cout << '.';
       }
-      else
+      else if(data[j] == 1)
       {
         std::cout << '*';
+      }
+      else
+      {
+        std:: cout << 'X';
       }
     }
     std:: cout << std::endl;
   }
 }
 
+bool Grid::solved() 
+{
+  int i, j;
+  int* data;
+
+  for(i = 0; i < rows; i++)
+  {
+    data = lines[i].get_data();
+    for(j = 0; j < cols; j++)
+    {
+      if(data[j] == 0) 
+      {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
 bool Grid::solve()
 {
-  return solve_row(0);
+  int i;
+  while(!solved())
+  {
+    for(i = 0; i < rows; i++)
+    {
+      solve_row(i);
+    }
+
+    print_grid();
+    std::cout << std::endl;
+
+    for(i = 0; i < cols; i++)
+    {
+      solve_col(i);
+    }
+
+    print_grid();
+    std::cout << std::endl;
+  }
+  return true;
 }
 
 bool Grid::solve_row(int r)
 {
-  if(r == rows)
-  {
-    return true;
-  }
-  
-  bool valid;
+  Line new_line(cols);
+  bool new_line_assigned;
   std::vector<int> combo;
 
   int k = row_clues[r].size();
@@ -75,24 +114,77 @@ bool Grid::solve_row(int r)
   std::string bitmask(k, '1');
   bitmask.resize(n, '0');
 
+  Line old_line = lines[r];
+  new_line_assigned = false;
+  Line candidate = Line(cols);
+
   do
   {
     combo = combo_str_to_vector(bitmask);
-    lines[r].fill_line(row_clues[r], combo);
+    candidate.fill_line(row_clues[r], combo);
 
-    if(!verify_columns(r+1))
+    if(candidate.matches(old_line)) 
     {
-      continue;
+      if(!new_line_assigned) 
+      {
+        new_line = Line(candidate);
+        new_line_assigned = true;
+      }
+      else
+      {
+        new_line = new_line.union_lines(candidate);
+      }
     }
-
-    valid = solve_row(r+1);
-    if(valid)
-    {
-      return true;
-    }
+    
   } while(std::prev_permutation(bitmask.begin(), bitmask.end()));
 
-  lines[r].clear();
+  if(new_line_assigned)
+  {
+    lines[r] = new_line;
+  }
+  return false;
+}
+
+bool Grid::solve_col(int c)
+{
+  Line new_line(rows);
+  bool new_line_assigned;
+  std::vector<int> combo;
+
+  int k = col_clues[c].size();
+  int n = num_slots(col_clues[c], rows);
+  
+  std::string bitmask(k, '1');
+  bitmask.resize(n, '0');
+
+  Line old_line = create_column(c);
+  new_line_assigned = false;
+  Line candidate = Line(rows);
+
+  do
+  {
+    combo = combo_str_to_vector(bitmask);
+    candidate.fill_line(col_clues[c], combo);
+
+    if(candidate.matches(old_line)) 
+    {
+      if(!new_line_assigned) 
+      {
+        new_line = Line(candidate);
+        new_line_assigned = true;
+      }
+      else
+      {
+        new_line = new_line.union_lines(candidate);
+      }
+    }
+    
+  } while(std::prev_permutation(bitmask.begin(), bitmask.end()));
+
+  if(new_line_assigned)
+  {
+    assign_column(c, new_line);
+  }
   return false;
 }
 
@@ -122,4 +214,13 @@ Line Grid::create_column(int col)
   }
 
   return result;
+}
+
+void Grid::assign_column(int col, Line line)
+{
+  int i;
+  for(i = 0; i < rows; i++) 
+  {
+    lines[i].put(col, line.get_data()[i]);
+  }
 }
