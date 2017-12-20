@@ -17,7 +17,7 @@ public:
   int get_size();
   bool is_valid(std::vector<int> clues, int upto);
   void fill_line(std::vector<int> clues, std::vector<int> perm);
-  Line union_lines(Line other);
+  void intersect_lines(Line other);
   bool matches(Line other);
 private:
   std::vector<int> get_blocks_upto(int upto);
