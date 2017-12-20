@@ -31,10 +31,14 @@ Line::~Line()
 
 Line & Line::operator=(const Line & other)
 {
-  size = other.size;
-  delete[] filled;
+  if(size != other.size) {
+    // if the size needs to be changed, we need to reallocate the array
+    size = other.size;
+    delete[] filled;
 
-  filled = new int[size];
+    filled = new int[size];
+  }
+  
   std::copy(other.filled, other.filled + size, filled);
   return *this;
 }
