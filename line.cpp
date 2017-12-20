@@ -1,4 +1,5 @@
 #include "line.h"
+#include <algorithm>
 #include <stdexcept>
 #include <numeric>
 #include <iostream>
@@ -25,13 +26,16 @@ Line::Line(const Line & other)
 
 Line::~Line()
 {
-  //delete[] filled;
+  delete[] filled;
 }
 
 Line & Line::operator=(const Line & other)
 {
   size = other.size;
-  filled = other.filled;
+  delete[] filled;
+
+  filled = new int[size];
+  std::copy(other.filled, other.filled + size, filled);
   return *this;
 }
 
