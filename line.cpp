@@ -1,4 +1,5 @@
 #include "line.h"
+#include <algorithm>
 #include <stdexcept>
 #include <numeric>
 #include <iostream>
@@ -25,13 +26,20 @@ Line::Line(const Line & other)
 
 Line::~Line()
 {
-  //delete[] filled;
+  delete[] filled;
 }
 
 Line & Line::operator=(const Line & other)
 {
-  size = other.size;
-  filled = other.filled;
+  if(size != other.size) {
+    // if the size needs to be changed, we need to reallocate the array
+    size = other.size;
+    delete[] filled;
+
+    filled = new int[size];
+  }
+  
+  std::copy(other.filled, other.filled + size, filled);
   return *this;
 }
 
@@ -207,30 +215,27 @@ void Line::fill_line(std::vector<int> clues, std::vector<int> perm)
  * a difference between the lines, a 0 for undetermined is placed. Otherwise,
  * the same data between the lines is added
  */
-Line Line::union_lines(Line other) 
+void Line::intersect_lines(Line other) 
 {
   if(size != other.get_size()) 
   {
-    throw new std::domain_error("Liens are different sizes");
+    throw new std::domain_error("Lines are different sizes");
   }
 
   int i;
   int* data = other.get_data();
-  Line new_line(size);
 
   for(i = 0; i < size; i++) 
   {
     if(filled[i] == data[i]) 
     {
-      new_line.put(i, filled[i]);
+      put(i, filled[i]);
     }
     else 
     {
-      new_line.put(i, 0);
+      put(i, 0);
     }
   }
-
-  return new_line;
 }
 
 /*

@@ -132,7 +132,7 @@ bool Grid::solve_row(int r)
       }
       else
       {
-        new_line = new_line.union_lines(candidate);
+        new_line.intersect_lines(candidate);
       }
     }
     
@@ -175,7 +175,7 @@ bool Grid::solve_col(int c)
       }
       else
       {
-        new_line = new_line.union_lines(candidate);
+        new_line.intersect_lines(candidate);
       }
     }
     
