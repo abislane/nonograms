@@ -61,6 +61,33 @@ void Line::clear()
   }
 }
 
+bool Line::solved() {
+  int i;
+  for(i = 0; i < size; i++) {
+    if(filled[i] == 0) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool Line::equals(Line other) {
+  if(size != other.size) {
+    return false;
+  }
+
+  int i;
+  for(i = 0; i < size; i++)
+  {
+    if(filled[i] != other.filled[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 void Line::fill_x() {
   int i;
   for(i = 0; i < size; i++)

@@ -118,6 +118,11 @@ bool Grid::solve_row(int r)
   new_line_assigned = false;
   Line candidate = Line(cols);
 
+  if(old_line.solved()) 
+  {
+    return false;
+  }
+
   do
   {
     combo = combo_str_to_vector(bitmask);
@@ -134,6 +139,10 @@ bool Grid::solve_row(int r)
       {
         new_line.intersect_lines(candidate);
       }
+    }
+
+    if(new_line_assigned && new_line.equals(old_line)) {
+      return false; // no changes will be able to be made
     }
     
   } while(std::prev_permutation(bitmask.begin(), bitmask.end()));
@@ -160,6 +169,11 @@ bool Grid::solve_col(int c)
   Line old_line = create_column(c);
   new_line_assigned = false;
   Line candidate = Line(rows);
+
+  if(old_line.solved()) 
+  {
+    return false;
+  }
 
   do
   {

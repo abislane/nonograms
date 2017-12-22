@@ -19,6 +19,8 @@ public:
   void fill_line(std::vector<int> clues, std::vector<int> perm);
   void intersect_lines(Line other);
   bool matches(Line other);
+  bool solved();
+  bool equals(Line other);
 private:
   std::vector<int> get_blocks_upto(int upto);
   int size;
