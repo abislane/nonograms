@@ -36,6 +36,18 @@ void Grid::add_col_clues(int col, std::vector<int> clues)
   col_clues[col] = clues;
 }
 
+
+void Grid::print_horizontal_gridlines() {
+  int k;
+  std::cout << COLOR_WHITE;
+  for(k = 0; k < cols; k++) {
+    if(k % 5 == 0) {
+      std::cout << "+";
+    }
+    std::cout << "-";
+  }
+  std::cout << "+" << std::endl;
+}
 void Grid::print_grid()
 {
   int i, j;
@@ -43,10 +55,21 @@ void Grid::print_grid()
 
   for(i = 0; i < rows; i++)
   {
+    // print horizontal border between 5x5 subgrids
+    if(i % 5 == 0)
+    {
+      print_horizontal_gridlines();
+    }
+
     data = lines[i].get_data();
     turns = lines[i].get_turns();
     for(j = 0; j < cols; j++)
     {
+      // print vertical border between 5x5 subgrids
+      if(j % 5 == 0) {
+        std::cout << COLOR_WHITE << "|";
+      }
+
       if(turns[j] == turn)
       {
         std::cout << COLOR_YELLOW;
@@ -69,8 +92,9 @@ void Grid::print_grid()
         std:: cout << 'X';
       }
     }
-    std:: cout << std::endl;
+    std:: cout << "|" << std::endl;
   }
+  print_horizontal_gridlines();
   std::cout << COLOR_RESET;
 }
 

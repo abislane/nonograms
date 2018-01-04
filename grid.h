@@ -27,6 +27,7 @@ private:
   bool solve_row(int row);
   bool solve_col(int col);
   void next_turn();
+  void print_horizontal_gridlines();
 };
 
 #endif
