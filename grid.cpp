@@ -3,11 +3,16 @@
 #include <string>
 #include <iostream>
 
+#define COLOR_YELLOW "\x1b[33m"
+#define COLOR_WHITE  "\x1b[37m"
+#define COLOR_RESET  "\x1b[0m"
+
 Grid::Grid(int m, int n)
 {
   int i;
   rows = m;
   cols = n;
+  turn = 0;
 
   for(i = 0; i < m; i++)
   {
@@ -34,13 +39,23 @@ void Grid::add_col_clues(int col, std::vector<int> clues)
 void Grid::print_grid()
 {
   int i, j;
-  int* data;
+  int *data, *turns;
 
   for(i = 0; i < rows; i++)
   {
     data = lines[i].get_data();
+    turns = lines[i].get_turns();
     for(j = 0; j < cols; j++)
     {
+      if(turns[j] == turn)
+      {
+        std::cout << COLOR_YELLOW;
+      }
+      else
+      {
+        std::cout << COLOR_WHITE;
+      }
+
       if(data[j] == 0)
       {
         std::cout << '.';
@@ -56,6 +71,7 @@ void Grid::print_grid()
     }
     std:: cout << std::endl;
   }
+  std::cout << COLOR_RESET;
 }
 
 bool Grid::solved() 
@@ -83,6 +99,7 @@ bool Grid::solve()
   int i;
   while(!solved())
   {
+    next_turn();
     for(i = 0; i < rows; i++)
     {
       solve_row(i);
@@ -90,7 +107,8 @@ bool Grid::solve()
 
     print_grid();
     std::cout << std::endl;
-
+    
+    next_turn();
     for(i = 0; i < cols; i++)
     {
       solve_col(i);
@@ -99,12 +117,23 @@ bool Grid::solve()
     print_grid();
     std::cout << std::endl;
   }
+
+  // increment the turns one more time to make the final result all white
+  next_turn();
   return true;
+}
+
+void Grid::next_turn() {
+  int i;
+  for(i = 0; i < rows; i++) {
+    lines[i].next_turn();
+  }
+  turn++;
 }
 
 bool Grid::solve_row(int r)
 {
-  Line new_line(cols);
+  Line new_line(cols, turn);
   bool new_line_assigned;
   std::vector<int> combo;
 
@@ -116,7 +145,7 @@ bool Grid::solve_row(int r)
 
   Line old_line = lines[r];
   new_line_assigned = false;
-  Line candidate = Line(cols);
+  Line candidate = Line(cols, turn);
 
   if(old_line.solved()) 
   {
@@ -132,7 +161,7 @@ bool Grid::solve_row(int r)
     {
       if(!new_line_assigned) 
       {
-        new_line = Line(candidate);
+        new_line = candidate;
         new_line_assigned = true;
       }
       else
@@ -149,14 +178,14 @@ bool Grid::solve_row(int r)
 
   if(new_line_assigned)
   {
-    lines[r] = new_line;
+    update_row(r, new_line);
   }
   return false;
 }
 
 bool Grid::solve_col(int c)
 {
-  Line new_line(rows);
+  Line new_line(rows, turn);
   bool new_line_assigned;
   std::vector<int> combo;
 
@@ -168,7 +197,7 @@ bool Grid::solve_col(int c)
 
   Line old_line = create_column(c);
   new_line_assigned = false;
-  Line candidate = Line(rows);
+  Line candidate = Line(rows, turn);
 
   if(old_line.solved()) 
   {
@@ -184,7 +213,7 @@ bool Grid::solve_col(int c)
     {
       if(!new_line_assigned) 
       {
-        new_line = Line(candidate);
+        new_line = candidate;
         new_line_assigned = true;
       }
       else
@@ -197,7 +226,7 @@ bool Grid::solve_col(int c)
 
   if(new_line_assigned)
   {
-    assign_column(c, new_line);
+    update_column(c, new_line);
   }
   return false;
 }
@@ -230,11 +259,28 @@ Line Grid::create_column(int col)
   return result;
 }
 
-void Grid::assign_column(int col, Line line)
+void Grid::update_column(int col, Line line)
 {
   int i;
+  int *new_data = line.get_data();
   for(i = 0; i < rows; i++) 
   {
-    lines[i].put(col, line.get_data()[i]);
+    if(lines[i].get_data()[col] != new_data[i])
+    {
+      lines[i].put(col, new_data[i]);
+    }
+  }
+}
+
+void Grid::update_row(int row, Line line)
+{
+  int i;
+  int *prev_data = lines[row].get_data(), *new_data = line.get_data();
+  for(i = 0; i < cols; i++) 
+  {
+    if(prev_data[i] != new_data[i])
+    {
+      lines[row].put(i, new_data[i]);
+    }
   }
 }

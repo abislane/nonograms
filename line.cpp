@@ -8,6 +8,17 @@ Line::Line(int s)
 {
   size = s;
   filled = new int[s];
+  turn_updated = new int[s];
+  turn = 0;
+  clear();
+}
+
+Line::Line(int s, int t)
+{
+  size = s;
+  filled = new int[s];
+  turn_updated = new int[s];
+  turn = 0;
   clear();
 }
 
@@ -17,16 +28,14 @@ Line::Line(const Line & other)
   int* data = other.filled;
   int i;
   filled = new int[size];
+  turn_updated = new int[size];
+  turn = other.turn;
 
   for(i = 0; i < size; i++)
   {
     filled[i] = data[i];
+    turn_updated[i] = other.turn_updated[i];
   }
-}
-
-Line::~Line()
-{
-  delete[] filled;
 }
 
 Line & Line::operator=(const Line & other)
@@ -35,12 +44,21 @@ Line & Line::operator=(const Line & other)
     // if the size needs to be changed, we need to reallocate the array
     size = other.size;
     delete[] filled;
+    delete[] turn_updated;
 
     filled = new int[size];
+    turn_updated = new int[size];
   }
   
   std::copy(other.filled, other.filled + size, filled);
+  std::copy(other.turn_updated, other.turn_updated + size, turn_updated);
   return *this;
+}
+
+Line::~Line()
+{
+  delete[] filled;
+  delete[] turn_updated;
 }
 
 void Line::put(int index, int type)
@@ -50,6 +68,7 @@ void Line::put(int index, int type)
     throw std::domain_error("index out of bounds on line");
   }
   filled[index] = type;
+  turn_updated[index] = turn;
 }
 
 void Line::clear()
@@ -58,6 +77,7 @@ void Line::clear()
   for(i = 0; i < size; i++)
   {
     filled[i] = 0;
+    turn_updated[i] = turn;
   }
 }
 
@@ -93,12 +113,18 @@ void Line::fill_x() {
   for(i = 0; i < size; i++)
   {
     filled[i] = -1;
+    turn_updated[i] = turn;
   }
 }
 
 int *Line::get_data()
 {
   return filled;
+}
+
+int *Line::get_turns()
+{
+  return turn_updated;
 }
 
 int Line::get_size()
@@ -288,4 +314,9 @@ bool Line::matches(Line other)
   }
 
   return true;
+}
+
+void Line::next_turn()
+{
+  turn++;
 }

@@ -15,15 +15,18 @@ public:
 private:
   int rows;
   int cols;
+  int turn;
   std::vector<std::vector<int>> row_clues;
   std::vector<std::vector<int>> col_clues;
   std::vector<Line> lines;
 
   bool verify_columns(int upto);
   Line create_column(int col);
-  void assign_column(int col, Line line);
+  void update_column(int col, Line line);
+  void update_row(int row, Line line);
   bool solve_row(int row);
   bool solve_col(int col);
+  void next_turn();
 };
 
 #endif
